@@ -4,6 +4,7 @@ In PlayWright terms, browsers are called as Projects.
 It also runs on multiple browsers(projects) in parallel.
 Supports Web, Mobile Web, Functional, Accessibility and API testing.
 We can run a specific test file or even a specific test from a test file as needed.
+  npm run chrome:headed ./tests/title.spec.ts
 We can even start running a specific test file from a specific line number.
 Supports both headless and headed browser testing across multiple browser engines:
   Chromium-based browsers:
