@@ -1,0 +1,33 @@
+{
+  "name": "playwright-experiments",
+  "version": "1.0.0",
+  "description": "Involves my experiments with PlayWright, headless, headed and CI",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "dev": "playwright test --debug",
+    "chrome": "playwright test --project=chromium",
+    "firefox": "playwright test --project=firefox",
+    "webkit": "playwright test --project=webkit",
+    "headed": "playwright test --headed",
+    "chrome:headed": "playwright test --project=chromium --headed",
+    "chrome:debug": "playwright test --project=chromium --debug",
+    "firefox:headed": "playwright test --project=firefox --headed",
+    "firefox:debug": "playwright test --project=firefox --debug",
+    "webkit:headed": "playwright test --project=webkit --headed",
+    "webkit:debug": "playwright test --project=webkit --debug",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "PlayWright",
+    "Automation",
+    "Testing"
+  ],
+  "author": "Akshay Pawar",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0"
+  }
+}

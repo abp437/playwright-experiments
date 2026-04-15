@@ -1,0 +1,30 @@
+Developed and Open Sourced by Microsoft.
+By default PlayWright runs in headless mode.
+In PlayWright terms, browsers are called as Projects.
+It also runs on multiple browsers(projects) in parallel.
+Supports Web, Mobile Web, Functional, Accessibility and API testing.
+Supports both headless and headed browser testing across multiple browser engines:
+  Chromium-based browsers:
+    Google Chrome
+    Microsoft Edge
+    Chromium
+    Brave
+    Opera (Chromium-based)
+    Vivaldi
+
+  WebKit-based browsers:
+    Safari (macOS)
+    Safari (iOS)
+
+  Firefox-based browsers:
+    Mozilla Firefox (Desktop)
+    Mozilla Firefox (Nightly build)
+    Firefox Developer Edition
+    Firefox ESR (Extended Support Release)
+
+Revolutionary features:
+  Multi Tab and Multi Window support
+  PlayWright has it's own Debugger
+  Mobile browsers can also be tested with device width and height specifications
+  Built in support for reporting
+  Seamless CI integration with Jenkins and GitHub Actions
