@@ -26,6 +26,10 @@ Supports both headless and headed browser testing across multiple browser engine
     Firefox ESR (Extended Support Release)
 
 Revolutionary features:
+  Codegen:
+    We can just record our actions on the browser and they will be auto written into a test file.
+    In this we can also emulate devices and variable screen widths, heights.
+    We can also do color scheme testing using Codegen itself
   Multi Tab and Multi Window support
   PlayWright has it's own Debugger
   Mobile browsers can also be tested with device width and height specifications
