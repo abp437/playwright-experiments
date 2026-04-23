@@ -17,13 +17,13 @@ async function logout(page: Page) {
 }
 
 // Test for non-existent user login
-test.only("Non-existent user login", async ({ page }) => {
+test("Non-existent user login", async ({ page }) => {
   await login(page, "dafsdf@gmail.com", "sdfdsafjhjv!Sd!1!");
   await expect(page.getByText("Email or password not recognized.")).toBeVisible();
 });
 
 // Test for invalid credentials login
-test.only("Invalid credentials login", async ({ page }) => {
+test("Invalid credentials login", async ({ page }) => {
   await login(page, "jambhaleprajkta@gmail.com", "SecurePass!1!");
   await expect(
     page.getByText(
@@ -33,7 +33,7 @@ test.only("Invalid credentials login", async ({ page }) => {
 });
 
 // Test for Super Admin login
-test.only("Super admin login", async ({ page }) => {
+test("Super admin login", async ({ page }) => {
   await login(page, "akshaypawar@doodle-blue.com", "SecurePass!1!");
   await expect(page).toHaveURL(`${BASE_URL}/analytics`, { timeout: 30000 });
   await expect(page.getByText("Product Metrics")).toBeVisible();
