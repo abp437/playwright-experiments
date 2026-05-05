@@ -1,5 +1,6 @@
 import { test, expect, Page } from "@playwright/test";
 import { BASE_URL } from "../constants";
+import creds from "../credentials.json";
 
 // Helper function for common flow
 async function forgotPasswordFlow(page: Page, email: string) {
@@ -21,17 +22,17 @@ async function forgotPasswordFlow(page: Page, email: string) {
 }
 
 test("Forgot Password - Correct Email", async ({ page }) => {
-  // Using the helper with the correct email
-  await forgotPasswordFlow(page, "abp437@gmail.com");
+  // Using the helper with the correct email from JSON
+  await forgotPasswordFlow(page, creds.invalidUser.email);
 
-  // Assert success message (assuming success message is shown for a valid email)
+  // Assert success message
   await expect(page.getByText(/If an active account exists for that email, a reset link has been sent./)).toBeVisible();
 });
 
 test("Forgot Password - Incorrect Email", async ({ page }) => {
-  // Using the helper with the incorrect email
-  await forgotPasswordFlow(page, "adskjvfds@asdifyf.com");
+  // Using the helper with the incorrect email from JSON
+  await forgotPasswordFlow(page, creds.nonExistentUser.email);
 
-  // Assert error or validation message
+  // Assert same success/neutral message (not leaking info about accounts)
   await expect(page.getByText(/If an active account exists for that email, a reset link has been sent./)).toBeVisible();
 });
