@@ -1,6 +1,8 @@
 import { expect, Page, test } from "@playwright/test";
-import { BASE_URL } from "../constants";
-import creds from "../credentials.json";
+import { BASE_URL, isQaEnv } from "../constants";
+import { qa, local } from "../credentials.json";
+
+const creds = isQaEnv() ? qa : local;
 
 test.describe.configure({ mode: "serial" });
 test.setTimeout(30000);

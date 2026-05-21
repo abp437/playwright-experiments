@@ -1,6 +1,8 @@
 import { test, expect, Page } from "@playwright/test";
-import { BASE_URL } from "../constants";
-import creds from "../credentials.json";
+import { BASE_URL, isQaEnv } from "../constants";
+import { qa, local } from "../credentials.json";
+
+const creds = isQaEnv() ? qa : local;
 
 // Helper function for login
 async function login(page: Page, email: string, password: string) {

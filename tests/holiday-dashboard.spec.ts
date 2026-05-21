@@ -1,13 +1,13 @@
 import { test, expect, Page } from "@playwright/test";
-import { BASE_URL } from "../constants";
-import creds from "../credentials.json";
+import { BASE_URL, isQaEnv } from "../constants";
+import { qa, local } from "../credentials.json";
+
+const creds = isQaEnv() ? qa : local;
 
 async function loginAsEmployee(page: Page) {
   await page.goto(`${BASE_URL}/login`);
   await page.getByRole("textbox", { name: "Email" }).fill(creds.employee.email);
-  await page
-    .getByRole("textbox", { name: "Password" })
-    .fill(creds.employee.password);
+  await page.getByRole("textbox", { name: "Password" }).fill(creds.employee.password);
   await page.getByRole("button", { name: "Login" }).click();
   await expect(page).toHaveURL(/\/calendar/, { timeout: 5000 });
 }
@@ -39,13 +39,11 @@ test("Holiday popup shows current-year holidays", async ({ page }) => {
   await expect(
     page.getByRole("heading", {
       name: new RegExp(`Company Holidays ${currentYear}`),
-    })
+    }),
   ).toBeVisible();
 
   const table = page.locator("table");
-  const emptyState = page.getByText(
-    `No holidays found for ${currentYear}.`,
-  );
+  const emptyState = page.getByText(`No holidays found for ${currentYear}.`);
 
   await Promise.race([
     table.waitFor({ state: "visible", timeout: 5000 }),
@@ -58,9 +56,7 @@ test("Holiday popup shows current-year holidays", async ({ page }) => {
 
   await expect(table.getByRole("columnheader", { name: "Date" })).toBeVisible();
   await expect(table.getByRole("columnheader", { name: "Name" })).toBeVisible();
-  await expect(
-    table.getByRole("columnheader", { name: "Description" })
-  ).toBeVisible();
+  await expect(table.getByRole("columnheader", { name: "Description" })).toBeVisible();
 
   const rows = table.locator("tbody tr");
   const rowCount = await rows.count();
