@@ -14,9 +14,11 @@ async function loginAsAdmin(page: Page) {
     waitUntil: "domcontentloaded",
   });
   await expect(page.getByRole("heading", { name: "Sign In" })).toBeVisible();
-  await page.getByLabel("Email *").fill(creds.admin.email);
-  await page.getByLabel("Password *").fill(creds.admin.password);
-  await page.getByRole("button", { name: "Login" }).click();
+  await page.locator('[data-playwright-selector="signin-email-input"]').fill(creds.admin.email);
+  await page
+    .locator('[data-playwright-selector="signin-password-input"]')
+    .fill(creds.admin.password);
+  await page.locator('[data-playwright-selector="signin-submit"]').click();
   await expect(page).toHaveURL(`${BASE_URL}/dashboard`, { timeout: 10000 });
 }
 
@@ -26,7 +28,7 @@ async function openAdminSettings(page: Page) {
 }
 
 async function openIpDialog(page: Page) {
-  await page.getByRole("button").nth(5).click();
+  await page.locator('[data-playwright-selector="ip-add-button"]').click();
   await expect(page.getByRole("heading", { name: "Add Allowed IP address" })).toBeVisible();
 }
 
@@ -36,9 +38,20 @@ async function ensureIpAddress(page: Page, ip: string) {
   }
 
   await openIpDialog(page);
-  await page.getByPlaceholder(ipAddressPlaceholder).fill(ip);
-  await page.getByRole("button", { name: "Save" }).click();
+  await page.locator('[data-playwright-selector="ip-input"]').fill(ip);
+  await page.locator('[data-playwright-selector="ip-save"]').click();
   await expect(page.getByText(ip, { exact: true })).toBeVisible();
+}
+
+async function deleteIpAddress(page: Page, ip: string) {
+  const ipCard = page
+    .locator('[data-playwright-selector^="ip-card-"]')
+    .filter({ hasText: ip })
+    .first();
+
+  await expect(ipCard).toBeVisible();
+  await ipCard.locator('[data-playwright-selector^="ip-delete-"]').click();
+  await expect(page.getByText(ip, { exact: true })).toHaveCount(0);
 }
 
 test.describe("Allowed IP Addresses", () => {
@@ -73,11 +86,15 @@ test.describe("Allowed IP Addresses", () => {
 
     for (const ip of invalidIps) {
       await openIpDialog(page);
-      await page.getByPlaceholder(ipAddressPlaceholder).fill(ip);
-      await page.getByRole("button", { name: "Save" }).click();
+      await page.locator('[data-playwright-selector="ip-input"]').fill(ip);
+      await page.locator('[data-playwright-selector="ip-save"]').click();
       await expect(page.getByRole("heading", { name: "Add Allowed IP address" })).toBeVisible();
       await expect(page.getByText(ip, { exact: true })).toHaveCount(0);
       await page.getByRole("button", { name: "Cancel" }).click();
+    }
+
+    for (const ip of validIps) {
+      await deleteIpAddress(page, ip);
     }
   });
 });

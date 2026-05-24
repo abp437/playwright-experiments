@@ -6,9 +6,13 @@ const creds = isQaEnv() ? qa : local;
 
 async function loginAsEmployee(page: Page) {
   await page.goto(`${BASE_URL}/login`);
-  await page.getByRole("textbox", { name: "Email" }).fill(creds.employee.email);
-  await page.getByRole("textbox", { name: "Password" }).fill(creds.employee.password);
-  await page.getByRole("button", { name: "Login" }).click();
+  await page
+    .locator('[data-playwright-selector="signin-email-input"]')
+    .fill(creds.employee.email);
+  await page
+    .locator('[data-playwright-selector="signin-password-input"]')
+    .fill(creds.employee.password);
+  await page.locator('[data-playwright-selector="signin-submit"]').click();
   await expect(page).toHaveURL(/\/calendar/, { timeout: 5000 });
 }
 
@@ -30,7 +34,9 @@ function parseDate(value: string): Date | null {
 test("Holiday popup shows current-year holidays", async ({ page }) => {
   await loginAsEmployee(page);
 
-  const holidaysButton = page.getByRole("button", { name: "Holidays" });
+  const holidaysButton = page.locator(
+    '[data-playwright-selector="attendance-calendar-holidays-button"]',
+  );
   await expect(holidaysButton).toBeVisible();
 
   await holidaysButton.click();
@@ -42,7 +48,9 @@ test("Holiday popup shows current-year holidays", async ({ page }) => {
     }),
   ).toBeVisible();
 
-  const table = page.locator("table");
+  const table = page.locator(
+    '[data-playwright-selector="attendance-calendar-holidays-table"]',
+  );
   const emptyState = page.getByText(`No holidays found for ${currentYear}.`);
 
   await Promise.race([

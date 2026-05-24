@@ -7,7 +7,7 @@ const creds = isQaEnv() ? qa : local;
 // Helper function for common flow
 async function forgotPasswordFlow(page: Page, email: string) {
   await page.goto(`${BASE_URL}/login`);
-  await page.getByRole("link", { name: "Forgot Password?" }).click();
+  await page.locator('[data-playwright-selector="signin-forgot-link"]').click();
 
   // Wait for the URL to navigate to /forgot-password
   await page.waitForURL(`${BASE_URL}/forgot-password`);
@@ -17,10 +17,12 @@ async function forgotPasswordFlow(page: Page, email: string) {
   await expect(page.getByText(/Forgot Password/i)).toBeVisible();
 
   // Fill in the email field
-  await page.getByRole("textbox", { name: "Enter your registered email" }).fill(email);
+  await page
+    .locator('[data-playwright-selector="forgot-password-email-input"]')
+    .fill(email);
 
   // Click the "Send Reset Email" button
-  await page.getByRole("button", { name: "Send Reset Email" }).click();
+  await page.locator('[data-playwright-selector="forgot-password-submit"]').click();
 }
 
 test("Forgot Password - Correct Email", async ({ page }) => {

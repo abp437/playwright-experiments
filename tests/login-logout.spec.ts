@@ -7,14 +7,16 @@ const creds = isQaEnv() ? qa : local;
 // Helper function for login
 async function login(page: Page, email: string, password: string) {
   await page.goto(`${BASE_URL}/login`);
-  await page.getByRole("textbox", { name: "Email" }).fill(email);
-  await page.getByRole("textbox", { name: "Password" }).fill(password);
-  await page.getByRole("button", { name: "Login" }).click();
+  await page.locator('[data-playwright-selector="signin-email-input"]').fill(email);
+  await page
+    .locator('[data-playwright-selector="signin-password-input"]')
+    .fill(password);
+  await page.locator('[data-playwright-selector="signin-submit"]').click();
 }
 
 // Helper function for logout
 async function logout(page: Page) {
-  await page.locator('[data-test-selector="user-navbar-popover"]').click();
+  await page.locator('[data-playwright-selector="user-navbar-popover"]').click();
   await page.getByRole("button", { name: "Logout" }).click();
   await expect(page).toHaveURL(`${BASE_URL}/congrats`);
 }
